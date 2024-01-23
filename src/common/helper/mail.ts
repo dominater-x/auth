@@ -27,7 +27,7 @@ export class EmailSender {
       .then(() => Logger.log('Connected to EMAIL SERVER'))
       .catch((err) => {
         // eslint-disable-next-line
-				console.log(err);
+        console.log(err);
         Logger.warn(
           'Unable to connect to email server. Make sure you have configured the SMTP options in .env',
         );

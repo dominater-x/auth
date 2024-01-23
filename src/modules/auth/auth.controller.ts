@@ -4,8 +4,11 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { Serialize } from 'src/common/interceptors/serialize.interceptor';
+import { UserSerializeDto } from './dto/user.dto';
 
 @Controller('auth')
+@Serialize(UserSerializeDto)
 export class AuthController {
   constructor(
     private readonly service: AuthService,

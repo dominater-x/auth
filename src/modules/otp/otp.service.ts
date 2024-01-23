@@ -5,7 +5,7 @@ import { Otp } from './entity/otp.entity';
 import { Repository } from 'typeorm';
 import { EmailSender } from 'src/common/helper/mail';
 import { Mail } from 'src/common/constants/mail.constants';
-import { Utils } from '../common/helper/utils';
+import { Utils } from '../../common/helper/utils';
 import { ValidateOtp } from './dtos/validate-otp.dto';
 
 @Injectable()

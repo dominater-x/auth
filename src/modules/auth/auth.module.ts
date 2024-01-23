@@ -1,10 +1,10 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ValidateMiddleware } from 'src/auth/middlewares/validate.middleware';
+import { ValidateMiddleware } from './middlewares/validate.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/user/entity/user.entity';
-import { OtpModule } from 'src/otp/otp.module';
+import { User } from '../user/entity/user.entity';
+import { OtpModule } from '../otp/otp.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
