@@ -11,19 +11,9 @@ export class MailService {
   private transporter: nodemailer.Transporter;
 
   constructor(private readonly config: MailConfigService) {
-    // this.transporter = nodemailer.createTransport({
-    //   host: 'sandbox.smtp.mailtrap.io',
-    //   port: 465,
-    //   secure: false,
-    //   requireTLS: true,
-    //   auth: {
-    //     user: '2c80156b2354cd',
-    //     pass: 'df3f8794ab875c',
-    //   },
-    //   logger: false,
-    // } as any);
-    console.log(this.config.settings);
-    this.transporter = nodemailer.createTransport(this.config.settings as any);
+    this.transporter = nodemailer.createTransport(
+      this.config.settings as nodemailer.TransportOptions,
+    );
 
     this.transporter
       .verify()

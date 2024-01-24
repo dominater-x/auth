@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { MailTransporterOptions } from '../../common/interfaces/mail-transporter.interface';
 
 @Injectable()
 export class MailConfigService {
@@ -21,7 +22,7 @@ export class MailConfigService {
     return this.service.get<string>('mail.pass');
   }
 
-  get settings() {
+  get settings(): MailTransporterOptions {
     return {
       host: this.host,
       port: this.port,
@@ -32,6 +33,6 @@ export class MailConfigService {
         pass: this.pass,
       },
       logger: false,
-    };
+    } as MailTransporterOptions;
   }
 }
