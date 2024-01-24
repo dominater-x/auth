@@ -8,24 +8,30 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UtilModule } from './common/modules/utils/util.module';
 import { MailModule } from './common/modules/mail/mail.module';
+import { OrmConfigModule } from './config/orm/configuration.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      host: 'localhost',
-      port: 27017,
-      database: 'auth',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    AppConfigModule,
+    OrmConfigModule,
+    TypeOrmModule.forRootAsync({
+      useClass: OrmConfigModule,
     }),
     UtilModule,
     OtpModule,
     UserModule,
     AuthModule,
     MailModule,
-    AppConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+// {
+// 	type: 'mongodb',
+// 		host: 'localhost',
+// 			port: 27017,
+// 				database: 'auth',
+// 					entities: [__dirname + '/**/*.entity{.ts,.js}'],
+//     }

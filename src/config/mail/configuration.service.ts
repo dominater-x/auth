@@ -33,6 +33,6 @@ export class MailConfigService {
         pass: this.pass,
       },
       logger: false,
-    } as MailTransporterOptions;
+    };
   }
 }
