@@ -3,17 +3,16 @@ import { GenerateOtpDto } from './dtos/generate-otp.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Otp } from './entity/otp.entity';
 import { Repository } from 'typeorm';
-import { EmailSender } from 'src/common/helper/mail';
+import { MailService } from 'src/common/modules/mail/mail.service';
 import { Mail } from 'src/common/constants/mail.constants';
-import { Utils } from '../../common/helper/utils';
 import { ValidateOtp } from './dtos/validate-otp.dto';
-
+import { UtilService } from 'src/common/modules/utils/util.service';
 @Injectable()
 export class OtpService {
   constructor(
     @InjectRepository(Otp) private readonly repo: Repository<Otp>,
-    private readonly mail: EmailSender,
-    private readonly utils: Utils,
+    private readonly mail: MailService,
+    private readonly utils: UtilService,
   ) {}
 
   async generateOtp(body: GenerateOtpDto): Promise<void> {
@@ -29,7 +28,7 @@ export class OtpService {
       username: data.email,
       subject: Mail.Signup,
       otp,
-      expiresIn: 5,
+      expiresIn: Mail.ExpiresIn,
       reason: data.reason,
     });
   }

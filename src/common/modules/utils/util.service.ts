@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Utils {
+export class UtilService {
   computeOtp() {
     const otp = parseInt(
       Math.floor(100000 + Math.random() * 900000)

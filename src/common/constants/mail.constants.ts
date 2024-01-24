@@ -3,4 +3,5 @@ export const Mail = {
   Url: 'https://www.henceforth.com',
   EmailFrom: 'henceforth@official.com',
   Signup: 'OTP | Signup',
+  ExpiresIn: 5,
 };

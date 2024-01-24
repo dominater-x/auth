@@ -1,38 +1,40 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { renderTemplateData } from '../dtos/mail-data.dto';
-import { RenderTemplate } from './render-template';
-import { Mail } from '../constants/mail.constants';
+import { renderTemplateData } from './dtos/mail-data.dto';
+import { Mail } from '../../constants/mail.constants';
+import * as path from 'path';
+import * as pug from 'pug';
+import { MailConfigService } from 'src/config/mail/configuration.service';
 
 @Injectable()
-export class EmailSender {
+export class MailService {
   private transporter: nodemailer.Transporter;
-  private template: RenderTemplate;
 
-  constructor() {
-    this.transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 465,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: '2c80156b2354cd',
-        pass: 'df3f8794ab875c',
-      },
-      logger: false,
-    } as any);
+  constructor(private readonly config: MailConfigService) {
+    // this.transporter = nodemailer.createTransport({
+    //   host: 'sandbox.smtp.mailtrap.io',
+    //   port: 465,
+    //   secure: false,
+    //   requireTLS: true,
+    //   auth: {
+    //     user: '2c80156b2354cd',
+    //     pass: 'df3f8794ab875c',
+    //   },
+    //   logger: false,
+    // } as any);
+    console.log(this.config.settings);
+    this.transporter = nodemailer.createTransport(this.config.settings as any);
 
     this.transporter
       .verify()
       .then(() => Logger.log('Connected to EMAIL SERVER'))
       .catch((err) => {
         // eslint-disable-next-line
-        console.log(err);
+				console.log(err);
         Logger.warn(
           'Unable to connect to email server. Make sure you have configured the SMTP options in .env',
         );
       });
-    this.template = new RenderTemplate();
   }
 
   async sendEmail(mailOptions: nodemailer.SendMailOptions): Promise<void> {
@@ -52,7 +54,7 @@ export class EmailSender {
   }
 
   async sendMailWrapper(data: renderTemplateData): Promise<void> {
-    const text = this.template.render(data);
+    const text = this.templateRender(data);
 
     const mailOptions: nodemailer.SendMailOptions = {
       from: Mail.EmailFrom,
@@ -62,5 +64,20 @@ export class EmailSender {
     };
 
     await this.sendEmail(mailOptions);
+  }
+
+  templateRender(data: renderTemplateData): string {
+    const templatePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      'templates',
+      `${data.template}.pug`,
+    );
+    return pug.compileFile(templatePath)({
+      ...data,
+      brand: Mail.Brand,
+      url: Mail.Url,
+    });
   }
 }
