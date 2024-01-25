@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('app', () => ({
-  DB_HOST: process.env.DB_HOST,
-  DB_PORT: process.env.DB_PORT,
-  DB: process.env.DB,
+export default registerAs('orm', () => ({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  db: process.env.DB,
 }));

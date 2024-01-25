@@ -1,21 +1,24 @@
+
 import { AppConfigModule } from './config/app/configuration.module';
+import { OrmConfigModule } from './config/orm/configuration.module';
+import { OrmConfigService } from './config/orm/configuration.service';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { OtpModule } from './modules/otp/otp.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
+import { OtpModule } from './modules/otp/otp.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UtilModule } from './common/modules/utils/util.module';
 import { MailModule } from './common/modules/mail/mail.module';
-import { OrmConfigModule } from './config/orm/configuration.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
     AppConfigModule,
-    OrmConfigModule,
     TypeOrmModule.forRootAsync({
-      useClass: OrmConfigModule,
+      imports: [OrmConfigModule],
+      inject: [OrmConfigService],
+      useFactory: async (service: OrmConfigService) => service.setting,
     }),
     UtilModule,
     OtpModule,
@@ -28,10 +31,4 @@ import { OrmConfigModule } from './config/orm/configuration.module';
 })
 export class AppModule {}
 
-// {
-// 	type: 'mongodb',
-// 		host: 'localhost',
-// 			port: 27017,
-// 				database: 'auth',
-// 					entities: [__dirname + '/**/*.entity{.ts,.js}'],
-//     }
+// GtDtUAvyhW

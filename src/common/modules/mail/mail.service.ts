@@ -19,8 +19,7 @@ export class MailService {
       .verify()
       .then(() => Logger.log('Connected to EMAIL SERVER'))
       .catch((err) => {
-        // eslint-disable-next-line
-				console.log(err);
+        Logger.error(err);
         Logger.warn(
           'Unable to connect to email server. Make sure you have configured the SMTP options in .env',
         );
@@ -28,19 +27,8 @@ export class MailService {
   }
 
   async sendEmail(mailOptions: nodemailer.SendMailOptions): Promise<void> {
-    this.transporter.sendMail(
-      mailOptions,
-      (error: Error | null, info: nodemailer.SentMessageInfo) => {
-        if (error) {
-          Logger.error('Error:', error.message);
-        } else {
-          Logger.warn('Email sent:', info.response);
-        }
-
-        // Close the transporter after sending the email
-        this.transporter.close();
-      },
-    );
+    await this.transporter.sendMail(mailOptions);
+    this.transporter.close();
   }
 
   async sendMailWrapper(data: renderTemplateData): Promise<void> {

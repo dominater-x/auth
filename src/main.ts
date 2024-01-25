@@ -12,7 +12,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  await app.listen(config.port, () => {
+  await app.listen(4000, () => {
     Logger.log(`Server live on ${config.url}:${config.port}`);
   });
 }

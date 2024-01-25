@@ -23,7 +23,6 @@ export class AuthService {
         email: body.email,
       },
     });
-    console.log(data);
 
     if (!data || !(await bcrypt.compare(body.password, data.password)))
       throw new HttpException('Wrong email or password', HttpStatus.NOT_FOUND);

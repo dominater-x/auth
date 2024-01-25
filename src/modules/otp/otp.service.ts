@@ -34,7 +34,6 @@ export class OtpService {
   }
 
   async validateOtp(body: ValidateOtp): Promise<void> {
-    console.log(body);
     const data = await this.repo.findOne({
       where: { email: body.email, otp: body.otp },
     });
